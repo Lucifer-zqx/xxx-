@@ -58,17 +58,21 @@ export default {
     ...mapState(['address','categorys','shops','userInfo']),
     //头部轮播数组
     outerArr(){
-      const {categorys} = this
+      //*********************************************************************
+      //解构赋值是浅拷贝,splice(startIndex,length,[optionElement])会改变原数组**
+      //slice(startIndex,endIndex)不会改变原数组                             **
+      //**********************************************************************
+      const originArr = [...this.categorys]
       const outerArr = []
-      for(let i = 0 ;i<(categorys.length / 8 + 1);i++){
-        const innerArr = categorys.splice(0,8)
+      for(let i = 0 ;i<(originArr.length / 8 + 1);i++){
+        const innerArr = originArr.splice(0,8)
         outerArr.push(innerArr)
       }
       return outerArr
     }
   },
   watch:{
-    categorys(){
+    categorys(val,oldVal){
       this.$nextTick(()=>{
         new Swiper('.swiper-container',{
           loop:true,

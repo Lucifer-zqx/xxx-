@@ -7,7 +7,7 @@
           <i class="iconfont icon-person"></i>
         </div>
         <div class="user-info">
-          <p class="user-info-top" v-if='userInfo.name'>{{userInfo._id ? userInfo.name : "登录/注册"}}</p>
+          <p class="user-info-top" v-if='!userInfo.name'>{{userInfo._id ? userInfo.name : "登录/注册"}}</p>
           <p>
             <span class="user-icon">
               <i class="iconfont icon-shouji icon-mobile"></i>
