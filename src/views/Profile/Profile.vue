@@ -7,7 +7,7 @@
           <i class="iconfont icon-person"></i>
         </div>
         <div class="user-info">
-          <p class="user-info-top" v-if='!userInfo.name'>{{userInfo._id ? userInfo.name : "登录/注册"}}</p>
+          <p class="user-info-top" v-if='userInfo.name'>{{userInfo._id ? userInfo.name : "登录/注册"}}</p>
           <p>
             <span class="user-icon">
               <i class="iconfont icon-shouji icon-mobile"></i>
@@ -87,9 +87,7 @@
           </span>
         </div>
       </a>
-      <cube-button :primary="true" class="ownbtn" @click="logout" v-show='userInfo._id'>
-        退出登录
-      </cube-button>
+      <cube-button @click="logout" class="ownbtn" v-show='userInfo._id'>退出登录</cube-button>
     </section>
   </section>
 </template>
@@ -105,15 +103,38 @@ export default {
     ...mapState(['userInfo'])
   },
   methods:{
-    async logout(){
-      console.log("@@@")
-      const result = await reqLogout()
-      if(result.code === 0){
-        //清空vuex用户信息
-        this.$store.commit('recieve_userinfo',{})
-        this.$router.replace('/login')
+    logout(){
+      this.$createDialog({
+          type: 'confirm',
+          icon: 'cubeic-alert',
+          title: '确认退出吗？',
+          confirmBtn: {
+            text: '确定',
+            active: true,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          cancelBtn: {
+            text: '取消',
+            active: false,
+            disabled: false,
+            href: 'javascript:;'
+          },
+          onConfirm: async () => {
+            this.$createToast({
+              type: 'warn',
+              time: 1000,
+              txt: '您已退出'
+            }).show()
+            const result = await reqLogout()
+              if(result.code === 0){
+                //清空vuex用户信息
+                this.$store.commit('recieve_userinfo',{})
+                this.$router.replace('/login')
+              }
+          },
+        }).show()
       }
-    }
   }
   
 }

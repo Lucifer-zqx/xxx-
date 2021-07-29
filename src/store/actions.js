@@ -1,6 +1,22 @@
 //产生行为的actions
-import {reqAddress,reqFoodCategorys,reqShops,reqUserInfo} from '../api'
-import {RECIEVE_ADDRESS,RECIEVE_Category,RECIEVE_SHOP, RECIEVE_USERINFO} from './mutations_type'
+import {reqAddress,
+    reqFoodCategorys,
+    reqShops,
+    reqUserInfo,
+    reqShopGoods,
+    reqShopInfo,
+    reqShopRatings} 
+from '../api'
+import {RECIEVE_ADDRESS,
+    RECIEVE_Category,
+    RECIEVE_SHOP, 
+    RECIEVE_USERINFO,
+    RECIEVE_SHOPGOODS,
+    RECIEVE_SHOPRATING,
+    RECIEVE_SHOPINFO
+} from './mutations_type'
+
+
 export default{
     async getAddress(context){
         const longitude = context.state.longitude
@@ -42,6 +58,33 @@ export default{
         if(result.code === 0){
             const userInfo = result.data
             commit(RECIEVE_USERINFO,userInfo)
+        }
+    },
+
+    /**获取点餐信息 */
+    async getOrderMeal({commit}){
+        const result = await reqShopGoods()
+        if(result.code === 0){
+            const shopGoods = result.data
+            commit(RECIEVE_SHOPGOODS,{shopGoods})
+        }
+    },
+
+     /**获取评分信息 */
+     async getShopRating({commit}){
+        const result = await reqShopRatings()
+        if(result.code === 0){
+            const shopRating = result.data
+            commit(RECIEVE_SHOPRATING,{shopRating})
+        }
+    },
+
+     /**获取详情信息 */
+     async getShopInfo({commit}){
+        const result = await reqShopInfo()
+        if(result.code === 0){
+            const shopInfo = result.data
+            commit(RECIEVE_SHOPINFO,{shopInfo})
         }
     }
 }

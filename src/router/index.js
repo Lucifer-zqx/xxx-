@@ -7,6 +7,13 @@ import Order from '../views/Order/Order.vue'
 import Profile from '../views/Profile/Profile.vue'
 import Login from '../views/Login/Login.vue'
 
+
+import Shop from '../views/Shop/Shop.vue'
+import OrderMeal from '../views/Shop/OrderMeal/OrderMeal.vue'
+import Rating from '../views/Shop/Rating/Rating.vue'
+import ShopInfo from '../views/Shop/ShopInfo/ShopInfo.vue'
+
+
 Vue.use(VueRouter)
 
 export default new VueRouter({
@@ -34,6 +41,28 @@ export default new VueRouter({
     {
       path:'/login',
       component:Login
+    },
+    {
+      path:"/shop",
+      component: Shop,
+      children:[
+        {
+          path:"ordermeal",
+          component: OrderMeal,
+        },
+        {
+          path:"rating",
+          component: Rating,
+        },
+        {
+          path:"shopinfo",
+          component: ShopInfo,
+        },
+        {
+          path:'/',
+          redirect:'ordermeal'
+        }
+      ]
     },
     {
       path:"/",

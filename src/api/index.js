@@ -26,3 +26,13 @@ export const reqLoginWithCaptcha = (phone,code) => ajax(BASE_URL+'/login_sms',{p
 export const reqUserInfo = ()=> ajax(BASE_URL+'/userinfo')
 // 10、用户登出](#10用户登出)
 export const reqLogout = ()=> ajax(BASE_URL+'/logout')
+
+
+
+
+/*** 获取商家信息 */ 
+export const reqShopInfo = () => ajax('/shop_info') 
+/*** 获取商家评价数组 */ 
+export const reqShopRatings = () => ajax('/shop_ratings') 
+/*** 获取商家商品数组 */ 
+export const reqShopGoods = () => ajax('/shop_goods')

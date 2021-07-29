@@ -4,6 +4,9 @@ import App from './App.vue'
 //配置路由
 import router from './router'
 
+//引入mock
+import './mock'
+
 //引入vuex
 import store from './store'
 
