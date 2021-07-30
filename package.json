@@ -10,6 +10,7 @@
   "dependencies": {
     "amfe-flexible": "^2.2.1",
     "axios": "^0.21.1",
+    "better-scroll": "^2.4.1",
     "core-js": "^3.6.5",
     "css": "^3.0.0",
     "css-loader": "^6.2.0",

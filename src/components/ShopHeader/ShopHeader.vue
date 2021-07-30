@@ -27,34 +27,34 @@
             <div class="shop-brief-modal" v-if='isShowShopDetail'>
                 <div class="brief-modal-content">
                     <h2 class="content-title"> <span class="content-tag"> <span class="mini-tag">品牌</span> </span> <span
-                            class="content-name">嘉禾一品（温都水城）</span> </h2>
+                            class="content-name">{{shopInfo.name}}</span> </h2>
                     <ul class="brief-modal-msg">
                         <li>
-                            <h3>3.5</h3>
+                            <h3>{{shopInfo.score}}</h3>
                             <p>评分</p>
                         </li>
                         <li>
-                            <h3>90 单</h3>
+                            <h3>{{shopInfo.ratingCount}} 单</h3>
                             <p>月售</p>
                         </li>
                         <li>
-                            <h3>硅谷专送</h3>
-                            <p>约 28 分钟</p>
+                            <h3>{{shopInfo.description}}</h3>
+                            <p>约 {{shopInfo.deliveryTime}} 分钟</p>
                         </li>
                         <li>
-                            <h3>4 元</h3>
+                            <h3>{{shopInfo.deliveryPrice}} 元</h3>
                             <p>配送费用</p>
                         </li>
                         <li>
-                            <h3>1000m</h3>
+                            <h3>{{shopInfo.distance}}</h3>
                             <p>距离</p>
                         </li>
                     </ul>
                     <h3 class="brief-modal-title"><span>公告</span></h3>
-                    <div class="brief-modal-notice"> 是以粥为特色的中式营养快餐，自 2004 年 10 月 18 日创立“嘉和一品”品牌至今 </div>
-                    <div class="mask-footer"> <span class="iconfont icon-close"></span> </div>
+                    <div class="brief-modal-notice"> {{shopInfo.bulletin}} </div>
+                    <div class="mask-footer"><span class="iconfont icon-close " @click="isShowShopDetail = !isShowShopDetail"></span> </div>
                 </div>
-                <div class="brief-modal-cover"></div>
+                <div class="brief-modal-cover"  @click="isShowShopDetail = !isShowShopDetail"></div>
             </div>
             <!-- 下方详情页 -->
             <div class="activity-sheet" v-if='isShowActivity'>
@@ -69,7 +69,7 @@
                     </ul>
                     <div class="activity-sheet-close"> <span class="iconfont icon-close"  @click="isShowActivity =!isShowActivity"></span> </div>
                 </div>
-                <div class="activity-sheet-cover"></div>
+                <div class="activity-sheet-cover" @click="isShowActivity =!isShowActivity"></div>
             </div>
 
             
@@ -89,9 +89,7 @@ export default {
     }
   },
   watch:{
-    shopInfo(){
-
-    }
+    
   },
   computed:{
     ...mapState(['shopInfo'])
@@ -298,7 +296,6 @@ export default {
       &.fade-enter,&.fade-leave-to
         opacity 0
       .brief-modal-cover
-        display none
         position absolute
         width 100%
         height 100%
