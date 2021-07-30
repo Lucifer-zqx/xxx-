@@ -23,5 +23,6 @@ Vue.use(Style,Button)
 new Vue({
   render: h => h(App),
   router,
-  store
+  store,
+  
 }).$mount('#app')
