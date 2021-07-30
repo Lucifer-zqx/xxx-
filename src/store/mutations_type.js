@@ -12,4 +12,5 @@ export const RECIEVE_SHOPINFO = 'recieve_shopinfo'
 
 export const RECIEVE_SHOPRATING = 'recieve_shoprating'
 
-
+export const INCREMENT_FOODCOUNT = 'increment_foodcount'
+export const DECREMENT_FOODCOUNT = 'decrement_foodcount'

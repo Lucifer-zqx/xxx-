@@ -15,8 +15,8 @@ export default {
         food:Object
     },
     methods:{
-        updateFoodCount(){
-            
+        updateFoodCount(flag){
+          this.$store.dispatch("updateFoodCount",{flag,food:this.food})
         }
     }
 }

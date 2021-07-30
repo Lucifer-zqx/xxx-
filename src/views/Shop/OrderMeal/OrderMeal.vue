@@ -43,7 +43,7 @@
           </li>
         </ul>
       </div>
-
+      <Food :food='food' />
       
 
     </div>
@@ -53,15 +53,18 @@
 import BScroll from 'better-scroll'
 import {mapState} from 'vuex'
 import CartControl from '../../../components/CartControl/CartControl.vue'
+import Food from '../../../components/Food/Food.vue'
 export default {
   name: "Order",
   components:{
-    CartControl
+    CartControl,
+    Food
   },
   data(){
       return{
           scrollY:0,
-          tops:[]
+          tops:[],
+          food:{}
       }
   },
   computed:{
@@ -88,8 +91,9 @@ export default {
         // 平滑滑动右侧列表
         this.foodsScroll.scrollTo(0, -scrollY, 500)
       },
-      showFood(){
-
+      showFood(food){
+        this.food = food
+        this.$bus.$emit('isShow')
       },
       initScroll(){
         new BScroll('.menu-wrapper', {
@@ -127,6 +131,14 @@ export default {
         // 3. 更新数据
         this.tops = tops
         // console.log(tops)
+      },
+      //商品数量
+      updateCount(flag){
+        if(flag){
+          this.count++
+        }else{
+          this.count--
+        }
       }
       
 
@@ -139,11 +151,10 @@ export default {
         })
       }
   },
+  
 
   mounted() {
     this.$store.dispatch("getOrderMeal");
-    
-    
   },
 };
 </script>

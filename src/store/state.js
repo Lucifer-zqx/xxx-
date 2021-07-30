@@ -8,5 +8,6 @@ export default {
     userInfo:{},
     shopGoods:[], //点餐数据
     shopRating:[], //评分数据
-    shopInfo:{} //商家详情数据
+    shopInfo:{}, //商家详情数据
+    cartFoods:[] //购物车的数据
 }

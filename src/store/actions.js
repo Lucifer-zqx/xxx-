@@ -13,7 +13,9 @@ import {RECIEVE_ADDRESS,
     RECIEVE_USERINFO,
     RECIEVE_SHOPGOODS,
     RECIEVE_SHOPRATING,
-    RECIEVE_SHOPINFO
+    RECIEVE_SHOPINFO,
+    INCREMENT_FOODCOUNT,
+    DECREMENT_FOODCOUNT
 } from './mutations_type'
 
 
@@ -85,6 +87,15 @@ export default{
         if(result.code === 0){
             const shopInfo = result.data
             commit(RECIEVE_SHOPINFO,{shopInfo})
+        }
+    },
+
+    /**更新商品的数量 */
+    updateFoodCount({commit},{flag,food}){
+        if(flag){
+            commit(INCREMENT_FOODCOUNT,{food})
+        }else{
+            commit(DECREMENT_FOODCOUNT,{food})
         }
     }
 }

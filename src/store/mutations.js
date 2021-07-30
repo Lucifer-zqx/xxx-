@@ -1,4 +1,5 @@
 //操作状态的mutations
+import Vue from 'vue'
 import {
     RECIEVE_ADDRESS,
     RECIEVE_Category,
@@ -6,7 +7,9 @@ import {
     RECIEVE_USERINFO,
     RECIEVE_SHOPGOODS,
     RECIEVE_SHOPRATING,
-    RECIEVE_SHOPINFO
+    RECIEVE_SHOPINFO,
+    INCREMENT_FOODCOUNT,
+    DECREMENT_FOODCOUNT
 } from './mutations_type'
 export default{
     //商家地址
@@ -37,6 +40,27 @@ export default{
     //商家详情
     [RECIEVE_SHOPINFO](state,{shopInfo}){
         state.shopInfo = shopInfo
-    }
+    },
+
+    //增加商品的数量
+    [INCREMENT_FOODCOUNT](state,{food}){
+        //第一次添加
+        if(!food.count){
+            Vue.set(food,'count',1)  //让新增的对象属性也具有数据监视,此food指向shopGoods的里面的food，所以修改后，原来的数据就有了数据绑定
+            state.cartFoods.push(food)
+
+        }else{
+            food.count++
+        }
+    },
+    [DECREMENT_FOODCOUNT](state, {food}) {
+        if(food.count) {// 只有有值才去减
+          food.count--
+          if(food.count===0) {
+            // 将food从cartFoods中移除
+            state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
+          }
+        }
+      },
     
 }
