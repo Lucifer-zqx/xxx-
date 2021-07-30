@@ -146,19 +146,14 @@ export default {
       }
       
 
-  },
-  watch:{
-      shopGoods(){
-        this.$nextTick(()=>{
-                this.initScroll()
-                this.initTops()
-        })
-      }
-  },
-  
-
+  },  
   mounted() {
-    this.$store.dispatch("getOrderMeal");
+    this.$store.dispatch("getOrderMeal",()=>{
+        this.$nextTick(()=>{
+          this.initScroll()
+          this.initTops()
+        })
+    });
   },
 };
 </script>

@@ -64,11 +64,12 @@ export default{
     },
 
     /**获取点餐信息 */
-    async getOrderMeal({commit}){
+    async getOrderMeal({commit},fn){
         const result = await reqShopGoods()
         if(result.code === 0){
             const shopGoods = result.data
             commit(RECIEVE_SHOPGOODS,{shopGoods})
+            fn && fn() 
         }
     },
 
@@ -97,5 +98,7 @@ export default{
         }else{
             commit(DECREMENT_FOODCOUNT,{food})
         }
-    }
+    },
+
+    
 }

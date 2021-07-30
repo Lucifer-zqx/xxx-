@@ -2,64 +2,116 @@
   <div>
     <div class="shopcart">
       <div class="content">
-        <div class="content-left">
+        <div class="content-left" @click="toggleShow">
           <div class="logo-wrapper">
             <div class="logo" :class="{highlight:totalCount}">
               <i class="iconfont icon-shopping_cart " :class="{highlight:totalCount}"></i>
             </div>
             <div class="num" v-if="totalCount">{{totalCount}}</div>
           </div>
-          <div class="price ">￥10</div>
+          <div class="price ">￥{{totalPrice}}</div>
           <div class="desc">另需配送费￥{{shopInfo.deliveryPrice}} 元</div>
         </div>
         <div class="content-right">
-          <div class="pay not-enough">还差￥10 元起送</div>
+          <div class="pay " :class="payClass">
+            {{payText}}
+          </div>
         </div>
       </div>
-      <div class="shopcart-list" v-if='isShow'>
+      <transition name='move'>
+      <div class="shopcart-list" v-show='isShow'>
         <div class="list-header">
           <h1 class="title">购物车</h1>
-          <span class="empty">清空</span>
+          <span class="empty" @click="clearCart">清空</span>
         </div>
         <div class="list-content">
           <ul>
-            <li class="food">
-              <span class="name">红枣山药糙米粥</span>
-              <div class="price"><span>￥10</span></div>
+            <li class="food" v-for="food,index in cartFoods" :key="index">
+              <span class="name">{{food.name}}</span>
+              <div class="price"><span>￥{{food.price}}</span></div>
               <div class="cartcontrol-wrapper">
                 <div class="cartcontrol">
-                  <div class="iconfont icon-remove_circle_outline"></div>
-                  <div class="cart-count">1</div>
-                  <div class="iconfont icon-add_circle"></div>
+                  <CartControl :food="food"/>
                 </div>
               </div>
             </li>
           </ul>
         </div>
       </div>
+      </transition>
     </div>
-    <div class="list-mask" style="display: none"></div>
+    <transition name='fade'>
+      <div class="list-mask" v-show="isShow" @click="toggleShow"></div>
+    </transition>
   </div>
 </template>
 
 <script>
 import { mapState,mapGetters } from "vuex";
+import BScroll from 'better-scroll'
+import CartControl from '../CartControl/CartControl.vue'
 export default {
   name: "ShopCart",
+  components:{CartControl},
   data() {
     return {
       isShow: false,
     };
   },
   computed: {
-    ...mapState(["shopInfo"]),
+    ...mapState(["shopInfo","cartFoods"]),
     ...mapGetters(['totalCount','totalPrice']),
-    payClass() {},
-    payText() {},
+    payClass() {
+      if(this.totalPrice < 20){
+        return "not-enough"
+      }else{
+        return "enough"
+      }
+    },
+    payText() {
+      if(this.totalPrice === 0){
+        return "20元起送"
+      }else if(this.totalPrice<20){
+        return "还差"+(20 - this.totalPrice)+"元"
+      }else{
+        return "结算"
+      }
+
+    },
+  },
+
+  watch:{
+    //当totalcount为0时，关闭购物详情显示
+    totalCount(newValue){
+      if(newValue===0){
+        this.isShow = false
+      }
+    },
+    isShow(){
+      if(this.isShow){
+        this.$nextTick(()=>{
+          //单例的设计模式，当多次打开和关闭购物车列表时，
+          //如果不加控制，那么就会创建多个BScroll对象，导致点击一次就会加多次的现象
+          if(!this.scroll){
+            this.scroll = new BScroll('.list-content',{
+              click:true
+            })
+          }else{
+            this.scroll.refresh()
+          }            
+        }
+        )
+      }
+    }
   },
   methods: {
     toggleShow() {
-      this.isShow = !this.isShow;
+      if(this.totalCount !== 0){
+        this.isShow = !this.isShow;
+      }
+    },
+    clearCart(){
+      this.$store.commit('clearCart')
     }
   },
 };
@@ -175,7 +227,7 @@ export default {
       width 100%
       transform translateY(-100%)
       &.move-enter-active, &.move-leave-active
-        transition transform .3s
+        transition transform .5s
       &.move-enter, &.move-leave-to
         transform translateY(0)
       .list-header

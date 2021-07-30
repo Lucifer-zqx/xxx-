@@ -63,4 +63,14 @@ export default{
         }
       },
     
+    clearCart(state){
+        //清空food中的count值
+        state.cartFoods.forEach(item =>{
+            item.count = 0
+        })
+
+        //清空购物车数组
+        state.cartFoods = []
+        
+    }
 }
