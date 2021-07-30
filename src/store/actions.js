@@ -74,11 +74,13 @@ export default{
     },
 
      /**获取评分信息 */
-     async getShopRating({commit}){
+     async getShopRating({commit},cb){
         const result = await reqShopRatings()
         if(result.code === 0){
             const shopRating = result.data
             commit(RECIEVE_SHOPRATING,{shopRating})
+
+            cb && cb()
         }
     },
 

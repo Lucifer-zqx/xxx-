@@ -41,7 +41,7 @@
 
 <script>
 import {mapState} from 'vuex'
-import Star from '../Star/Start.vue'
+import Star from '../Star/Star.vue'
 export default {
     name:"ShopList",
     components:{Star},
