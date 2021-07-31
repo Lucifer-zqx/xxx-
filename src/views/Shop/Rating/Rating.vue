@@ -32,13 +32,13 @@
       <!-- 评论区 -->
       <div class="ratingselect">
         <div class="rating-type border-1px">
-          <span class="block positive active">
+          <span class="block positive" :class="{active:selectType===0}" @click="operateSelectType(0)">
             全部<span class="count">{{shopRating.length}}</span>
           </span>
-          <span class="block positive">
+          <span class="block positive" :class="{active:selectType===1}" @click="operateSelectType(1)">
             满意<span class="count">{{positive}}</span>
           </span>
-          <span class="block negative">
+          <span class="block negative" :class="{active:selectType===2}" @click="operateSelectType(2)">
             不满意<span class="count">{{negative}}</span>
           </span>
         </div>
@@ -49,7 +49,7 @@
       </div>
       <div class="rating-wrapper">
         <ul>
-          <li class="rating-item" v-for="rate,index in filtedRates" :key="index">
+          <li class="rating-item" v-for="rate,index in filterArr" :key="index">
             <div class="avatar">
               <img
                 width="28"
@@ -91,30 +91,60 @@ export default {
   components: { Star },
   data(){
       return{
-          isCheck :false
+          isCheck :false,
+          selectType:0
       }
   },
   computed: {
     ...mapState(["shopInfo",'shopRating']),
-    ...mapGetters(['positive','negative','filtedRates']),
-    
-  },
-  watch:{
-      isCheck(){
-          if(this.isCheck){
-
-          }
+    ...mapGetters(['positive','negative']),
+    filterArr(){
+      /**获取到当前ischeck和selectType
+       * 以决定过滤数组的条件
+       * 一共是6中组合
+       */
+      //this.isCheck //true or false
+      //this.selectType //选择的条件
+      if(this.isCheck){
+        const tempArr = this.shopRating.filter(item => item.text !== '')
+        return this.filterBySelectType(tempArr)
+      }else{
+        return this.filterBySelectType(this.shopRating)
       }
+    }
   },
   methods:{
-      formatedTime(timestamp){
+    formatedTime(timestamp){
           return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')
+    },
+    operateSelectType(type){
+      this.selectType = type
+    },
+    filterBySelectType(arr){
+        switch (this.selectType){
+          case 0:
+            return arr
+          case 1:
+            return arr.filter(item => item.rateType === 0)
+          case 2:
+            return arr.filter(item => item.rateType === 1)
+          default:
+            return
+        }
+    }
+  },
+  watch:{
+    filterArr(){
+      //解决初始化后的滚动已经确定，当滚动区域内容变小时，刷新不及时，导致出现空白区的问题。
+      this.$nextTick(()=>{
+        this.scroll.refresh()
+      })
     }
   },
   mounted(){
       this.$store.dispatch('getShopRating',()=>{
           this.$nextTick(()=>{
-                new BScroll(this.$refs.ratings,{
+                this.scroll = new BScroll(this.$refs.ratings,{
                     click:true
                 })
           })
@@ -286,7 +316,7 @@ export default {
               margin: 0 8px 4px 0
               font-size: 9px
             .icon-thumb_up
-              color: $yellow
+              color: orange
             .icon-thumb_down
               color: rgb(147, 153, 159)
 

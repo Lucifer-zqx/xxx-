@@ -30,17 +30,5 @@ export default {
                 return pre
             }
         },0)
-    },
-    filtedRates({shopRating,filterCondition}){
-        if(filterCondition === 0){
-            //全部展示
-            return shopRating
-        }else if(filterCondition === 1){
-            //只看有内容的评价
-            return shopRating.filter(item => item.text !== '')
-        }else if(filterCondition === 2){
-            //只看满意的评价
-
-        }
     }
 }

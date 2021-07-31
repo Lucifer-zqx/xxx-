@@ -10,7 +10,6 @@ export default {
     shopRating:[], //评分数据
     shopInfo:{}, //商家详情数据
     cartFoods:[], //购物车的数据
-    filterCondition:{} //过滤条件
-
+    
     //{firstFilter:0/1/2,secondFilter:0/1}
 }

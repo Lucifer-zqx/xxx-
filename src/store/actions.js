@@ -85,11 +85,12 @@ export default{
     },
 
      /**获取详情信息 */
-     async getShopInfo({commit}){
+     async getShopInfo({commit},cb){
         const result = await reqShopInfo()
         if(result.code === 0){
             const shopInfo = result.data
             commit(RECIEVE_SHOPINFO,{shopInfo})
+            cb && cb()
         }
     },
 
