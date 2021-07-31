@@ -29,7 +29,7 @@
       <section class="section">
         <h3 class="section-title">商家实景</h3>
         <div class="pic-wrapper">
-          <ul class="pic-list">
+          <ul class="pic-list" ref="picUl">
             <li class="pic-item" v-for='pic,index in shopInfo.pics' :key="index">
               <img
                 width="120"
@@ -72,6 +72,15 @@ export default {
           this.$nextTick(()=>{
               new BScroll('.shop-info',{
                   click:true
+              })
+              //设置计算ul的宽度
+              const ul = this.$refs.picUl
+              const liWidth = 120
+              const space = 6
+              const ulWidth = (liWidth+space)*this.shopInfo.pics.length-space +'px'
+              ul.style.width = ulWidth 
+              new BScroll('.pic-wrapper',{
+                scrollX:true
               })
           })
       })
